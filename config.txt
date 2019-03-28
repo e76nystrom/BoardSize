@@ -1,0 +1,10 @@
+climb=True
+cutBitDia=.125
+feed=6.0
+overHang=0.3125
+trimBitDia=.125
+widthBox=4.031
+xClear=0.020
+yBox=3.250
+yExtraBox=.050
+yLocBox=0.425
