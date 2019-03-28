@@ -60,7 +60,7 @@ def readInfo(file):
             line = line.rstrip()
             if len(line) == 0:
                 continue
-            [key, val] = line.split('=')
+            (key, val) = line.split('=')
             if key in info:
                 func = info[key]
                 funcClass = func.__class__.__name__
