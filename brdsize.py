@@ -403,10 +403,13 @@ class MainFrame(wx.Frame):
                 print(m.group(1), m.group(2))
                 axis = m.group(1)
                 val = int(m.group(2))
-                if val > 100000:
-                    val /= 1000000.0
+                if not kiCad:
+                    if val > 100000:
+                        val /= 1000000.0
+                    else:
+                        val /= 10000.0
                 else:
-                    val /= 10000.0
+                    val = int(m.group(2)) / 25400000.0
                 if axis == "X":
                     if val > self.xSize:
                         self.xSize = val
@@ -445,7 +448,6 @@ class MainFrame(wx.Frame):
         self.xSize = xMax - xMin
         self.ySize = yMax - yMin
         print("xSize %5.3f ySize %6.3f" % (self.xSize, self.ySize))
-
 
     def updateSize(self):
         if self.widthBtn.GetValue():
@@ -659,6 +661,43 @@ class MainFrame(wx.Frame):
         f.write("g54	(coordinate system 1)\n")
         f.write("m2	(end of program)\n");
         f.close()
+
+def parseCmdLine():
+    global kiCad
+    n = 1
+    inFile = None
+    argLen = len(sys.argv)
+    while True:
+        if n >= argLen:
+            break
+        val = sys.argv[n]
+        if val.startswith('--'):
+            if len(val) >= 3:
+                tmp = val[2:]
+                if tmp == 'help':
+                    help()
+        elif val.startswith('-'):
+            if len(val) >= 2:
+                tmp = val[1]
+                if tmp == "k":
+                    kiCad = True
+        elif val.startswith('?'):
+            help()
+        else:
+            pass
+        n += 1
+
+def help(self):
+    print("Usage: pcboard [options] ")
+    print(" ?            help\n" \
+          " -k           KiCad file\n" \
+          " -h           help\n" \
+    )
+    sys.exit()
+        
+kiCad = False
+
+parseCmdLine()
 
 app = wx.App()
 
