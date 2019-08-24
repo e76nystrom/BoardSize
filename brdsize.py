@@ -1,5 +1,5 @@
-#!/cygdrive/c/Python37/Python.exe
 #!/usr/local/bin/python2.7
+#!/cygdrive/c/Python27/Python.exe
 
 import wx
 import os
@@ -60,7 +60,7 @@ def readInfo(file):
             line = line.rstrip()
             if len(line) == 0:
                 continue
-            (key, val) = line.split('=')
+            [key, val] = line.split('=')
             if key in info:
                 func = info[key]
                 funcClass = func.__class__.__name__
@@ -333,9 +333,7 @@ class MainFrame(wx.Frame):
         self.SetPosition((dw - w, 0))
 
         self.tmpPath = ""
-        runDir = os.path.dirname(os.path.abspath(__file__))
-        self.configFile = os.path.join(runDir, 'config.txt')
-        readInfo(self.configFile)
+        readInfo('config.txt')
 
     def readVal(self, box):
         result = 0.0
@@ -470,7 +468,7 @@ class MainFrame(wx.Frame):
         self.updateSize()
 
     def OnCutHere(self, e):
-        saveInfo(self.configFile)
+        saveInfo('config.txt')
         self.error = False
         xSize = self.readVal(self.widthBox)
         bitDiameter = self.readVal(self.trimBitDia)
